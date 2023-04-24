@@ -4,8 +4,13 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
-        <!-- Email Address -->
+        @if(Session::has('error'))
+            <div class="alert alert-danger">
+                <ul>
+                    {{Session::get('error')}}
+                </ul>
+            </div>
+        @endif
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />

@@ -3,22 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\CompanyService;
+use App\Http\Services\PlanService;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
     protected $companyService;
-    public function __construct(CompanyService $companyService)
+    protected $planService;
+
+    public function __construct(CompanyService $companyService, PlanService $planService)
     {
         $this->companyService = $companyService;
+        $this->planService = $planService;
     }
 
     public function index()
     {
         //
         $companies = $this->companyService->index();
+        $plans = $this->planService->all();
+        //  $plansSub = $this->planService->listCompanySub();
+//        $this->companyService->check(2);
+        $listCompanySub  = $this->planService->listCompanySub();
 
-        return view('company.index',compact('companies'));
+        return view('company.index', compact('companies', 'plans','listCompanySub'));
     }
 
     /**
@@ -27,7 +35,7 @@ class CompanyController extends Controller
     public function create()
     {
         //
-      return view('company.create');
+        return view('company.create');
     }
 
     /**
@@ -56,7 +64,7 @@ class CompanyController extends Controller
         //
         $company = $this->companyService->show($id);
 
-        return view('company.edit',compact('company'));
+        return view('company.edit', compact('company'));
     }
 
     /**
@@ -65,7 +73,7 @@ class CompanyController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        $this->companyService->update($request,$id);
+        $this->companyService->update($request, $id);
         return redirect()->route('company.index');
     }
 
@@ -78,4 +86,6 @@ class CompanyController extends Controller
         $this->companyService->destroy($id);
         return redirect()->route('company.index');
     }
+
+
 }

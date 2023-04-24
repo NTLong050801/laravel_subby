@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\CheckCompanyLogin;
+use Bpuig\Subby\Models\Plan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -35,6 +37,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/edit',[CompanyController::class,'edit'])->name('company.edit');
         Route::post('/{id}/update',[CompanyController::class,'update'])->name('company.update');
         Route::get('/delete/{id}',[CompanyController::class,'destroy'])->name('company.destroy');
+    });
+    Route::prefix('/plan')->group(function (){
+        Route::get('/{id_plan}/{id_company}',[PlanController::class,'store'])->name('plan.store');
     });
 });
 

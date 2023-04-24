@@ -3,6 +3,8 @@
 namespace App\Http\Services;
 
 use App\Repositories\CompanyRepositoryEloquent;
+use App\Models\Company;
+use Bpuig\Subby\Models\PlanSubscription;
 
 class CompanyService
 {
@@ -37,5 +39,10 @@ class CompanyService
     {
         return $this->companyRp->update($request->input(),$id);
     }
-
+    public function check($id){
+        // Get user subscriptions
+        $company = Company::find($id);
+//        $subscription = $company->subscription();
+         return $company->subscription('main')->isActive();
+    }
 }
